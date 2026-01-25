@@ -1,27 +1,48 @@
-# JavaTraining-Week4
-
-## プロジェクト概要
-Spring Boot3を使用して、最小限のREST APIを構築しました。Hello APIからTaskモデルを用いたメモリ内でのタスク管理までを実装しています。
+# タスク管理API (JavaTraining-Week5)
+                        
+Spring BootとH2 Databaseを使用したタスク管理APIです。
+CRUD操作、バリデーション、例外処理を実装しています。
 
 ## 開発環境
 **JDK**：21
 **Framework**：Spring Boot 3.5.9
 **Build Tool**: Gradle
 **IDE**: VS Code
+**Database**: H2 Database
 
-## セットアップと手順
-**1．リポジトリをクローン**
-**2．サーバー起動（PowerShell）**　./gradlew.bat bootRun
-**3．動作確認（PowerShell）**
-Hello API: Invoke-RestMethod http://localhost:8080/hello
-タスク登録: Invoke-RestMethod -Uri http://localhost:8080/api/tasks -Method Post -ContentType "application/json" -Body '{"title":"new task"}'
-タスク一覧: Invoke-RestMethod http://localhost:8080/api/tasks
+## セットアップ手順
+1. リポジトリをクローンまたはダウンロードします。
+2. VS Codeでプロジェクトを開きます。
+3. `src/main/java/com/example/taskapp/TaskApplication.java` を実行してサーバーを起動します
+* ※データベース(H2)の設定は `src/main/resources/application.yml` に記述済みのため、追加のセットアップは不要です。
 
-## 苦労した点、解決した内容
-Java25がインストールされていたため、Gradleのビルドに失敗したので、Java21をインストール、環境変数の再設定をし、正常に起動できるようになった。
+## 動作確認 (PowerShell)
 
-標準的なcurlコマンドがエラーになったため、Invoke-RestMethodを使用した動作確認手順を確立した。
+### 1. タスク登録
+Invoke-RestMethod -Uri "http://localhost:8080/api/tasks" -Method Post -ContentType "application/json" -Body '{"title":"Test Task"}'
 
-## 提出に関する補足
-課題提出というコミットで、課題1から課題3をまとめて提出しておりますが、これは当初自身で作成した別リポジトリにて進めてしまい、提出直前にForkが必要であることに気づきファイルを移行したためです。本来であれば、機能ごとにコミットを分けるべきところ、一括での反映となってしまいました。開発過程では、Javaバージョンの解決、REST APIの段階的な実装を確実に行っております。
+### 2. タスク一覧
+Invoke-RestMethod -Uri "http://localhost:8080/api/tasks" -Method Get
 
+### 3. タスク更新 (ID:1)
+Invoke-RestMethod -Uri "http://localhost:8080/api/tasks/1" -Method Put -ContentType "application/json" -Body '{"title":"Updated"}'
+
+### 4. タスク削除 (ID:1)
+Invoke-RestMethod -Uri "http://localhost:8080/api/tasks/1" -Method Delete
+
+### エラーハンドリングの動作例
+Validationエラー（400 Bad Request）の場合
+Invoke-RestMethod -Uri "http://localhost:8080/api/tasks" -Method Post -ContentType "application/json" -Body '{"title":""}'
+**リモート サーバーがエラーを返しました: (400) 要求が不適切です**と表示されれば正常です
+
+存在しないIDへのアクセス（404 Not Found）
+Invoke-RestMethod -Uri "http://localhost:8080/api/tasks/999" -Method Delete
+**リモート サーバーがエラーを返しました: (404) 見つかりません**と表示されれば正常です
+
+## DBデータの確認 (H2 Console)
+起動中にブラウザで以下のURLにアクセスすると、DBの中身を確認できます。
+
+* **URL**: http://localhost:8080/h2-console
+* **JDBC URL**: `jdbc:h2:mem:tasks`
+* **User Name**: `sa`
+* **Password**: (空欄のままConnect)
