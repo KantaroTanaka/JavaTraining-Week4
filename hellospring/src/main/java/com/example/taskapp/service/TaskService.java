@@ -1,6 +1,7 @@
 package com.example.taskapp.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -39,5 +40,9 @@ public class TaskService {
             throw new TaskNotFoundException("Task not found with id: " + id);
         }
         taskRepository.deleteById(id);
+    }
+
+    public Optional<Task> findById(Long id) {
+        return taskRepository.findById(id);
     }
 }

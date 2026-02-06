@@ -5,19 +5,21 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-@RestControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(TaskNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleTaskNotFoundException(TaskNotFoundException ex) {
-        Map<String, String> body = new HashMap<>();
-        body.put("error", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleTaskNotFoundException(TaskNotFoundException e, Model model) {
+        // templates/error/404.html を表示する
+        return "error/404";
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

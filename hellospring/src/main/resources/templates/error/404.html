@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body>
+
+    <nav th:replace="~{layout :: header}"></nav>
+
+    <div style="text-align: center; margin-top: 50px;">
+        <h1 style="color: #dc3545; font-size: 3em;">404 Not Found</h1>
+        <p style="font-size: 1.2em;">お探しのタスクは見つかりませんでした。</p>
+        <p>指定されたIDが存在しないか、すでに削除されている可能性があります。</p>
+        
+        <div style="margin-top: 30px;">
+            <a href="/tasks" class="btn btn-primary">タスク一覧に戻る</a>
+        </div>
+    </div>
+
+</body>
+</html>
