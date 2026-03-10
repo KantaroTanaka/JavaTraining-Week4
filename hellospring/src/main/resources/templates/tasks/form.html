@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout('タスクフォーム', ~{::main})}" xmlns:th="http://www.thymeleaf.org">
+<body>
+<main>
+    <h3 th:text="${task.id == null ? 'タスク新規作成' : 'タスク編集'}"></h3>
+    
+    <form th:action="${task.id == null ? '/tasks' : '/tasks/' + task.id + '/edit'}" th:object="${task}" method="post">
+        
+        <div>
+            <label>タイトル:</label>
+            <input type="text" th:field="*{title}">
+            <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color: red;"></span>
+        </div>
+        
+        <div th:if="${task.id != null}">
+            <label>状態:</label>
+            <input type="checkbox" th:field="*{completed}"> 完了
+        </div>
+        
+        <br>
+        <button type="submit">保存</button>
+        <a th:href="@{/tasks}">キャンセル</a>
+    </form>
+</main>
+</body>
+</html>

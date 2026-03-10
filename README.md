@@ -1,27 +1,50 @@
-# JavaTraining-Week4
+# タスク管理システム (JavaTraining-Final)
 
-## プロジェクト概要
-Spring Boot3を使用して、最小限のREST APIを構築しました。Hello APIからTaskモデルを用いたメモリ内でのタスク管理までを実装しています。
+## プロダクト概要
+ログイン機能とREST APIを備えた、シンプルなタスク管理Webアプリケーションです。
+タスクの登録・閲覧・編集・削除（CRUD操作）を行うことができます。
 
 ## 開発環境
-**JDK**：21
-**Framework**：Spring Boot 3.5.9
-**Build Tool**: Gradle
-**IDE**: VS Code
+* **JDK:** 21
+* **Framework:** Spring Boot 3.5.9
+* **Build Tool:** Gradle
+* **IDE:** VS Code
+* **Database:** H2 Database (インメモリ)
 
-## セットアップと手順
-**1．リポジトリをクローン**
-**2．サーバー起動（PowerShell）**　./gradlew.bat bootRun
-**3．動作確認（PowerShell）**
-Hello API: Invoke-RestMethod http://localhost:8080/hello
-タスク登録: Invoke-RestMethod -Uri http://localhost:8080/api/tasks -Method Post -ContentType "application/json" -Body '{"title":"new task"}'
-タスク一覧: Invoke-RestMethod http://localhost:8080/api/tasks
+## セットアップ手順
+1. リポジトリをクローンまたはダウンロードします。
+2. VS Codeでプロジェクトを開きます。
+3. アプリケーションを起動します。
+   * **方法A（IDE）:** `src/main/java/com/example/taskapp/TaskApplication.java` を実行します。
+   * **方法B（コマンド）:** ターミナルで `./gradlew.bat bootRun` を実行します。
+4. ブラウザで以下のURLにアクセスしてください。
+   http://localhost:8080/tasks
 
-## 苦労した点、解決した内容
-Java25がインストールされていたため、Gradleのビルドに失敗したので、Java21をインストール、環境変数の再設定をし、正常に起動できるようになった。
+## 動作確認手順
+### 1. 画面からの操作
+自動的にログイン画面へリダイレクトされるため、以下の初期ユーザー情報でログインしてください。
+* **ユーザー名:** testuser
+* **パスワード:** password
 
-標準的なcurlコマンドがエラーになったため、Invoke-RestMethodを使用した動作確認手順を確立した。
+ログイン後は、画面上のボタンからタスクの新規登録、編集、削除、およびログアウトの操作が可能です。
 
-## 提出に関する補足
-課題提出というコミットで、課題1から課題3をまとめて提出しておりますが、これは当初自身で作成した別リポジトリにて進めてしまい、提出直前にForkが必要であることに気づきファイルを移行したためです。本来であれば、機能ごとにコミットを分けるべきところ、一括での反映となってしまいました。開発過程では、Javaバージョンの解決、REST APIの段階的な実装を確実に行っております。
+### 2. APIの操作
+以下のエンドポイントでJSON形式のデータ通信が可能です。
+* **全件取得 (GET):**
+  ```bash
+  curl http://localhost:8080/api/tasks
+  curl -X POST -H "Content-Type: application/json" -d "{\"title\":\"APIテスト\",\"completed\":false}" http://localhost:8080/api/tasks
 
+## アーキテクチャ図・パッケージ構成
+  com.example.taskapp
+ ┣ config/      # Spring Securityの認証・アクセス制御設定
+ ┣ controller/  # 画面用(View)とAPI用(REST)の窓口
+ ┣ entity/      # データベースのテーブル設計(Task)
+ ┣ exception/   # 404エラーなどの例外ハンドリング
+ ┣ repository/  # データベースとのやり取り(JPA)
+ ┗ service/     # ビジネスロジック・処理のまとめ役
+
+ ## 今後の改善点
+ 1. パスワードの再発行機能の追加
+ 2. タスクの検索・絞り込み機能の実装
+ 3. タスクの優先度（高・中・低）を設定・並び替えできる機能

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html th:fragment="layout(title, content)" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}">Task App</title>
+</head>
+<body>
+    <header>
+        <h2>タスク管理システム</h2>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">ログアウト</button>
+        </form>
+        <hr>
+    </header>
+
+    <div th:if="${successMessage}" style="color: green; font-weight: bold;" th:text="${successMessage}"></div>
+
+    <main th:replace="${content}"></main>
+
+</body>
+</html>
